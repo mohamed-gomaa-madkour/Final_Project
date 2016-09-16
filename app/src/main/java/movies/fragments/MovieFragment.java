@@ -79,7 +79,7 @@ public class MovieFragment extends Fragment implements MoviesTask.Callback {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressTV = (TextView) view.findViewById(R.id.progressTV);
 
-        //checkInstanceState(savedInstanceState);
+
         initAdapter();
         Log.d(TAG, "Update First Time..");
         sortBy = settings.getSortBy();
