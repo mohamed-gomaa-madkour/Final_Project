@@ -31,8 +31,8 @@ import movies.database.MovieContract;
 import movies.model.Movie;
 import movies.model.Review;
 import movies.model.Trailer;
-import movies.tasks.ReviewsTask;
-import movies.tasks.TrailersTask;
+import movies.BackgroundTasks.ReviewsTask;
+import movies.BackgroundTasks.TrailersTask;
 import movies.utils.Connectivity;
 
 

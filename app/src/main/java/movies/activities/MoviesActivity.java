@@ -9,17 +9,18 @@ import android.widget.FrameLayout;
 
 import com.example.moviesapp.R;
 
-import movies.calback.ActivityCallback;
-import movies.model.Movie;
+import movies.ActivityCalback.ActivityCallback;
 import movies.fragments.DetailFragment;
+import movies.model.Movie;
 
 /**
  * Created by MOHAM on 12/09/2016.
  */
-public class MainActivity extends AppCompatActivity implements ActivityCallback {
+public class MoviesActivity extends AppCompatActivity implements ActivityCallback {
 
     static final String TAG = "MainActivityLog";
     public static FrameLayout frameLayout; // static to be used in MovieFragment to check the device type.
+    Movie mv=null;
 
 
     @Override
@@ -33,17 +34,19 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback 
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
             getSupportActionBar().setTitle(null);
         }
     }
 
+
     @Override
     public void actionCallback(Movie movie) {
         Log.d(TAG, "Callback with " + movie.getJsonObject());
+        mv=movie;
 
         if (frameLayout == null) { // start Activity when app runs on a phone
-            Intent intent = new Intent(MainActivity.this, DetailActivity.class)
+            Intent intent = new Intent(MoviesActivity.this, DetailActivity.class)
                     .putExtra(DetailFragment.MOVIE_DATA, movie);
            startActivity(intent);
         } else { // start Activity when app runs on a tablet

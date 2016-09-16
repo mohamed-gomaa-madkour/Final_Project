@@ -1,4 +1,4 @@
-package movies.calback;
+package movies.ActivityCalback;
 
 import movies.model.Movie;
 

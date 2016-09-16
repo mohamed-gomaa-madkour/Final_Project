@@ -25,12 +25,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import movies.activities.MainActivity;
-import movies.adapters.MovieGridAdapter;
-import movies.calback.ActivityCallback;
+import movies.activities.MoviesActivity;
+import movies.adapter.MovieGridAdapter;
+import movies.ActivityCalback.ActivityCallback;
 import movies.database.DataSource;
 import movies.model.Movie;
-import movies.tasks.MoviesTask;
+import movies.BackgroundTasks.MoviesTask;
 import movies.utils.Connectivity;
 import movies.utils.Settings;
 
@@ -79,7 +79,16 @@ public class MovieFragment extends Fragment implements MoviesTask.Callback {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressTV = (TextView) view.findViewById(R.id.progressTV);
 
-        checkInstanceState(savedInstanceState);
+        //checkInstanceState(savedInstanceState);
+        initAdapter();
+        Log.d(TAG, "Update First Time..");
+        sortBy = settings.getSortBy();
+        if (!sortBy.equalsIgnoreCase(FAVOURITES))
+            updateMovies(sortBy);
+        else {
+            loadFavourites();
+        }
+
         return view;
     }
 
@@ -96,36 +105,10 @@ public class MovieFragment extends Fragment implements MoviesTask.Callback {
         });
     }
 
-    private void checkInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            Log.d(TAG, "Instance was saved..");
-            progressLayout.setVisibility(View.GONE);
-            if (savedInstanceState.containsKey(MOVIES_KEY)) {
-                moviesList = savedInstanceState.getParcelableArrayList(MOVIES_KEY);
-                for (Movie movie : moviesList) {
-                    mMovieGridAdapter.add(movie);
-                }
-            } else {
-                initAdapter();
-                Log.d(TAG, "Update First Time..");
-                updateMovies(sortBy);
-            }
-        } else {
-            initAdapter();
-            Log.d(TAG, "Update First Time..");
-            sortBy = settings.getSortBy();
-            if (!sortBy.equalsIgnoreCase(FAVOURITES))
-                updateMovies(sortBy);
-            else {
-                loadFavourites();
-            }
-        }
-    }
-
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        checkInstanceState(savedInstanceState);
+
     }
 
     @Override
@@ -218,7 +201,6 @@ public class MovieFragment extends Fragment implements MoviesTask.Callback {
         }
         cursor.close();
         moviesList=(ArrayList<Movie>) movieList;
-       // moviesList = (ArrayList<Movie>) dataSource.getMovies();
         Log.d(TAG, "Favourites Size " + moviesList.size());
         if (moviesList == null || moviesList.isEmpty()) {
             progressLayout.setVisibility(View.VISIBLE);
@@ -243,7 +225,6 @@ public class MovieFragment extends Fragment implements MoviesTask.Callback {
         progressTV.setVisibility(View.VISIBLE);
         progressTV.setText("Loading Movies \n wait a moment...");
 
-       // Toast.makeText(getContext(),"Loading Movies \n wait a moment...",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -260,7 +241,7 @@ public class MovieFragment extends Fragment implements MoviesTask.Callback {
         moviesList = new ArrayList<>();
         if (movieList != null)
             moviesList.addAll(movieList);
-        if (MainActivity.frameLayout != null)
+        if (MoviesActivity.frameLayout != null)
             if (activityCallback != null && !moviesList.isEmpty())
                 activityCallback.actionCallback(moviesList.get(0));
     }

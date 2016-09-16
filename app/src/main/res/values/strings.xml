@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Movies App</string>
+    <string name="app_name">My Movies App</string>
     <string name="action_sort_by">Sort by</string>
     <string name="action_sort_by_popularity">Most Popular</string>
     <string name="action_sort_by_rating">Highest Rated</string>

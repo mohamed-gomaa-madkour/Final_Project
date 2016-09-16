@@ -1,4 +1,4 @@
-package movies.tasks;
+package movies.BackgroundTasks;
 
 import android.net.Uri;
 import android.os.AsyncTask;
